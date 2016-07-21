@@ -68,16 +68,22 @@ while True:
     if state != new_state or first_loop:
         print("set state to: "+ str(GPIO.input(2)))
         state = new_state
+        ssh_retry_count = 0
+        ret = -1000
         if state == 0: # change state to "open"
-            ret = cmd_exec('ssh',['-i','/root/.ssh/makerspace_hb_open',
-                                  'spaceapi@heidelberg-makerspace.de'])
+            while ret != 0 and ssh_retry_count < 5:
+                ssh_retry_count = ssh_retry_count + 1
+                ret = cmd_exec('ssh',['-i','/root/.ssh/makerspace_hb_open',
+                                      'spaceapi@heidelberg-makerspace.de'])
             if ret != 0:
                 error = True
                 eprint('ERROR: could not change the remote state')
                             
-        elif state == 1: # change state to closed            
-            ret = cmd_exec('ssh',['-i','/root/.ssh/makerspace_hb_close',
-                                  'spaceapi@heidelberg-makerspace.de'])
+        elif state == 1: # change state to closed  
+            ssh_retry_count = ssh_retry_count + 1
+            while ret != 0 and ssh_retry_count < 5:          
+                ret = cmd_exec('ssh',['-i','/root/.ssh/makerspace_hb_close',
+                                      'spaceapi@heidelberg-makerspace.de'])
             if ret != 0:
                 error = True
                 eprint('ERROR: could not change the remote state')
