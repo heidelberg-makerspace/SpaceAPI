@@ -49,19 +49,19 @@ except NameError:
     print_help()          
         
 
-
+# TODO: implement record precance time
 data = {'api':'0.13',
         'space':'Heidelberg Makerspace', 
         'logo':'https://wiki.heidelberg-makerspace.de/mediawiki/images/thumb/f/f3/Makerspace_Icon.svg/267px-Makerspace_Icon.svg.png',
         'url':'https://wiki.heidelberg-makerspace.de',
         'location':{'address':'Sofienstraße 12, 69115 Heidelberg, Germany',
-                    'lon':'8.69390',
-                    'lat':'49.40792'},
+                    'lon':8.69390,
+                    'lat':49.40792},
         'contact':{'email':'makerspace@dai-heidelberg.de',
                    'facebook':'https://www.facebook.com/heidelbergmakerspace/',
                    'twitter':'@HD_Makerspace'},
         'issue_report_channels':['email'],
-        'state': {'open': str(space_is_open).lower()}
+        'state': {'open': space_is_open}
            }
 
 if outfile==None:

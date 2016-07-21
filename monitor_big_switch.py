@@ -10,6 +10,8 @@ This script runs on a RaspberryPi, monitors the swicht and triggers SpaceAPI cha
 from __future__ import print_function
 from time import sleep
 import arrow
+import httplib
+import json
 import subprocess as sp
 import RPi.GPIO as GPIO
 
@@ -48,7 +50,15 @@ first_loop = True
 
 time_var = arrow.Arrow.now()
 
+
+inet_connection = httplib.HTTPSConnection('heidelberg-makerspace.de')
+inet_connection.request('GET','/status.json')
+response = con.getresponse()
+inet_connection.close()
+status_json = response.read()
 # TODO: read from https://heidelberg-makerspace/status.json
+#json.get('location')
+
 longest_open = 0
 
 while True:
