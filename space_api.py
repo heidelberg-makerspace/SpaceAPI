@@ -5,21 +5,24 @@ The run of this script is triggert by SSH.
 """
 
 
-
+from __future__ import print_function
 import json
 import sys
 import time
+
+# print to STDERR
+def eprint(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
 
 
 def print_help():
     space_l = 40
     space_r = 40
-    print '\nUsage: '
-    print ('{:>'+str(space_l)+'}').format(sys.argv[0])+' '*5+'options'
-    print '\n\nOptions:\n'
-    print ('{:'+str(space_l)+'}').format('-s   --state')+('{:>'+str(space_r)+'}').format('[open|closed]')
-    print ('{:'+str(space_l)+'}').format('-o   --outfile')+('{:>'+str(space_r)+'}').format('file (default: ./status.json)')
-    print ('{:'+str(space_l)+'}').format('-m   --opnening-record')+('{:>'+str(space_r)+'}').format('record opening time (secounds)')
+    eprint( '\nUsage: ')
+    eprint( ('{:>'+str(space_l)+'}').format(sys.argv[0])+' '*5+'options')
+    eprint( '\n\nOptions:\n')
+    eprint( ('{:'+str(space_l)+'}').format('-s   --state')+('{:>'+str(space_r)+'}').format('[open|closed]'))
+    eprint( ('{:'+str(space_l)+'}').format('-o   --outfile')+('{:>'+str(space_r)+'}').format('file (default: ./status.json)'))
     exit(1)
     
 
@@ -50,7 +53,6 @@ except NameError:
     print_help()          
         
 
-# TODO: implement record precance time
 data = {'api':'0.13',
         'space':'Heidelberg Makerspace', 
         'logo':'https://wiki.heidelberg-makerspace.de/mediawiki/images/thumb/f/f3/Makerspace_Icon.svg/267px-Makerspace_Icon.svg.png',
@@ -62,11 +64,12 @@ data = {'api':'0.13',
                    'facebook':'https://www.facebook.com/heidelbergmakerspace/',
                    'twitter':'@HD_Makerspace'},
         'issue_report_channels':['email'],
-        'state': {'open': space_is_open, 'lastchange': int(time.time())}
-           }
+        'state': {'open': space_is_open, 'lastchange': int(time.time())},
+        'feeds': {'wiki': {'url': 'https://wiki.heidelberg-makerspace.de'}}
+        }
 
 if outfile==None:
-    print json.dumps(data)
+    print( json.dumps(data) )
 else:
     with open(outfile, 'w') as f:
         json.dump(data,f)
