@@ -8,7 +8,7 @@ The run of this script is triggert by SSH.
 
 import json
 import sys
-
+import time
 
 
 def print_help():
@@ -19,6 +19,7 @@ def print_help():
     print '\n\nOptions:\n'
     print ('{:'+str(space_l)+'}').format('-s   --state')+('{:>'+str(space_r)+'}').format('[open|closed]')
     print ('{:'+str(space_l)+'}').format('-o   --outfile')+('{:>'+str(space_r)+'}').format('file (default: ./status.json)')
+    print ('{:'+str(space_l)+'}').format('-m   --opnening-record')+('{:>'+str(space_r)+'}').format('record opening time (secounds)')
     exit(1)
     
 
@@ -61,7 +62,7 @@ data = {'api':'0.13',
                    'facebook':'https://www.facebook.com/heidelbergmakerspace/',
                    'twitter':'@HD_Makerspace'},
         'issue_report_channels':['email'],
-        'state': {'open': space_is_open}
+        'state': {'open': space_is_open, 'lastchange': int(time.time())}
            }
 
 if outfile==None:
