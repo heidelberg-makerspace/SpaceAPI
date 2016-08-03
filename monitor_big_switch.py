@@ -43,8 +43,8 @@ def cmd_exec(cmd,args,return_output=False):
 
 GPIO.setmode(GPIO.BCM)
 
-GPIO.setup(2, GPIO.IN)
-GPIO.setup(3, GPIO.OUT)
+GPIO.setup(2, GPIO.IN) # Pin for Monitoring
+GPIO.setup(3, GPIO.OUT) # Status LED
 GPIO.output(3, GPIO.LOW)
 
 
@@ -60,11 +60,11 @@ while not inet_connected:
     if cmd_exec('ping',['-c','1','-W','1','google.com']) == 0:
         inet_connected = True
     else:
-        for i in range(3):
+        for i in range(5):
             GPIO.output(3, GPIO.HIGH)
-            sleep(.1)
+            sleep(.2)
             GPIO.output(3, GPIO.LOW)
-            sleep(.1)     
+            sleep(.2)     
               
 
 while True:
