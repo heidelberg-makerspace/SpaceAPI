@@ -53,12 +53,26 @@ error = False
 first_loop = True
 
 
+# Block till network is online
+# ping google and blinck with status LED
+inet_connected = False
+while not inet_connected:
+    if cmd_exec('ping',['-c','1','-W','1','google.com']) == 0:
+        inet_connected = True
+    else:
+        for i in range(3):
+            GPIO.output(3, GPIO.HIGH)
+            sleep(.1)
+            GPIO.output(3, GPIO.LOW)
+            sleep(.1)     
+              
+
 while True:
     # In case of error blick with red LED
     if error:
-        GPIO.output(3, GPIO.LOW)
-        sleep(.5)
         GPIO.output(3, GPIO.HIGH)
+        sleep(.5)
+        GPIO.output(3, GPIO.LOW)
         sleep(.5)
         continue
     
