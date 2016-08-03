@@ -10,6 +10,8 @@ This script runs on a RaspberryPi, monitors the swicht and triggers SpaceAPI cha
 from __future__ import print_function
 from time import sleep
 import sys
+import httplib
+import json
 import subprocess as sp
 import RPi.GPIO as GPIO
 
@@ -48,9 +50,8 @@ GPIO.setup(3, GPIO.OUT) # Status LED
 GPIO.output(3, GPIO.LOW)
 
 
-state = GPIO.input(2)
 error = False
-first_loop = True
+
 
 
 # Block till network is online
@@ -65,8 +66,39 @@ while not inet_connected:
             sleep(.2)
             GPIO.output(3, GPIO.LOW)
             sleep(.2)     
-              
 
+
+# try to get old state from https://heidelberg-makerspace.de/status.json
+for i in range(3):
+    try:
+        inet_connection = httplib.HTTPSConnection('heidelberg-makerspace.de')
+        inet_connection.request('GET','/status.json')
+        response = inet_connection.getresponse()
+        status_json = response.read()
+        inet_connection.close()
+    except:
+        for i in range(3):
+            GPIO.output(3, GPIO.HIGH)
+            sleep(.4)
+            GPIO.output(3, GPIO.LOW)
+            sleep(.2)      
+        continue
+    break
+
+# Try to extract old opening state
+try:
+    status_dict = json.loads(status_json)
+    if status_dict['state']['open']:
+        state = 0
+    else:
+        state = 1
+except:
+    state = 10
+
+
+#
+# MONITORING LOOP FOR THE LEVER
+#
 while True:
     # In case of error blick with red LED
     if error:
@@ -79,7 +111,7 @@ while True:
     sleep(.5)
     new_state = GPIO.input(2)
     
-    if state != new_state or first_loop:
+    if state != new_state:
         print("set state to: "+ str(GPIO.input(2)))
         state = new_state
         ssh_retry_count = 0
@@ -106,4 +138,3 @@ while True:
             eprint('ERROR: Invalid state "'+str(state)+'"\nValid states are "0" and "1"')
             error = True
     
-    first_loop = False
