@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 """
-This script runs on a RaspberryPi, monitors the swicht and triggers SpaceAPI changes.
+This script runs on a RaspberryPi, monitors the switch and triggers SpaceAPI changes.
 """
 
 
@@ -68,11 +68,11 @@ while not inet_connected:
             sleep(.2)     
 
 
-# try to get old state from https://heidelberg-makerspace.de/status.json
+# try to get old state from community website (https://heidelberg-makerspace.de/dai-status.json)
 for i in range(3):
     try:
         inet_connection = httplib.HTTPSConnection('heidelberg-makerspace.de')
-        inet_connection.request('GET','/status.json')
+        inet_connection.request('GET','/dai-status.json')
         response = inet_connection.getresponse()
         status_json = response.read()
         inet_connection.close()
