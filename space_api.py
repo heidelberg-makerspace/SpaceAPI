@@ -26,7 +26,7 @@ def print_help():
     exit(1)
     
 
-outfile='status.json'
+outfile='dai-status.json'
 
 if len(sys.argv) < 3:
     print_help()
@@ -54,18 +54,16 @@ except NameError:
         
 
 data = {'api':'0.13',
-        'space':'Heidelberg Makerspace', 
-        'logo':'https://wiki.heidelberg-makerspace.de/mediawiki/images/thumb/f/f3/Makerspace_Icon.svg/267px-Makerspace_Icon.svg.png',
-        'url':'https://wiki.heidelberg-makerspace.de',
+        'space':'DAI Makerspace', 
+        'logo':'https://www.i-share-economy.org/kos/picture-cache/679/pic-factory/0_225_500_300_dim_not-set_pics_-1000177710_no_crop.jpg',
+        'url':'https://dai-heidelberg.de/de/bibliothek-usa-information/makerspace/',
         'location':{'address':'Sofienstraße 12, 69115 Heidelberg, Germany',
                     'lon':8.69390,
                     'lat':49.40792},
         'contact':{'email':'makerspace@dai-heidelberg.de',
-                   'facebook':'https://www.facebook.com/heidelbergmakerspace/',
-                   'twitter':'@HD_Makerspace'},
+                   'facebook':'https://www.facebook.com/daimakerspace/'},
         'issue_report_channels':['email'],
-        'state': {'open': space_is_open, 'lastchange': int(time.time())},
-        'feeds': {'wiki': {'url': 'https://wiki.heidelberg-makerspace.de'}}
+        'state': {'open': space_is_open, 'lastchange': int(time.time())}
         }
 
 if outfile==None:
