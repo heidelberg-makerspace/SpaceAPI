@@ -42,6 +42,7 @@ def cmd_exec(cmd,args,return_output=False):
         return 0
 
 
+print('setup GPIO')
 
 GPIO.setmode(GPIO.BCM)
 
@@ -49,6 +50,7 @@ GPIO.setup(2, GPIO.IN) # Pin for Monitoring
 GPIO.setup(3, GPIO.OUT) # Status LED
 GPIO.output(3, GPIO.LOW)
 
+print('setup GPIO: DONE')
 
 error = False
 
@@ -56,11 +58,15 @@ error = False
 
 # Block till network is online
 # ping google and blinck with status LED
+
 inet_connected = False
 while not inet_connected:
+    print('test online status')
     if cmd_exec('ping',['-c','1','-W','1','google.com']) == 0:
         inet_connected = True
+        print('online status: connected to the internet')
     else:
+        print('online status: offline')
         for i in range(5):
             GPIO.output(3, GPIO.HIGH)
             sleep(.2)
@@ -69,6 +75,7 @@ while not inet_connected:
 
 
 # try to get old state from community website (https://heidelberg-makerspace.de/dai-status.json)
+print('get old opening state')
 for i in range(3):
     try:
         inet_connection = httplib.HTTPSConnection('heidelberg-makerspace.de')
@@ -76,7 +83,9 @@ for i in range(3):
         response = inet_connection.getresponse()
         status_json = response.read()
         inet_connection.close()
-    except:
+        print('attempt',i,': got old opening state')
+    except: 
+        print('attempt',i,': failed to get old opening state')
         for i in range(3):
             GPIO.output(3, GPIO.HIGH)
             sleep(.4)
@@ -86,19 +95,24 @@ for i in range(3):
     break
 
 # Try to extract old opening state
+print('extracting opnening state')
 try:
     status_dict = json.loads(status_json)
     if status_dict['state']['open']:
         state = 0
+        print('opnening state: OPEN')
     else:
         state = 1
+        print('opnening state: CLOSED')
 except:
     state = 10
+    print('extracting opnening state FAILED')
 
 
 #
 # MONITORING LOOP FOR THE LEVER
 #
+print('starting monitoring loop')
 while True:
     # In case of error blick with red LED
     if error:
