@@ -85,7 +85,7 @@ for i in range(3):
         inet_connection.close()
         print('attempt',i,': got old opening state')
     except: 
-        print('attempt',i,': failed to get old opening state')
+        eprint('attempt',i,': FAILED to get old opening state')
         for i in range(3):
             GPIO.output(3, GPIO.HIGH)
             sleep(.4)
@@ -106,7 +106,7 @@ try:
         print('opnening state: CLOSED')
 except:
     state = 10
-    print('extracting opnening state FAILED')
+    eprint('extracting opnening state FAILED')
 
 
 #
