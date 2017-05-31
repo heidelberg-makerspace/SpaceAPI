@@ -109,7 +109,7 @@ except:
     print('extracting opnening state FAILED')
 
 
-:laughing:#
+#
 # MONITORING LOOP FOR THE LEVER
 #
 print('starting monitoring loop')
