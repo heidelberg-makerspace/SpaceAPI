@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
 This Script runs on the Server and generates the SpaceAPI json file.
