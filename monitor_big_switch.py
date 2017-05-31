@@ -78,7 +78,7 @@ while not inet_connected:
 print('get old opening state')
 for i in range(3):
     try:
-        inet_connection = httplib.HTTPSConnection('heidelberg-makerspace.de')
+        inet_connection = httplib.HTTPSConnection('www.heidelberg-makerspace.de')
         inet_connection.request('GET','/dai-status.json')
         response = inet_connection.getresponse()
         status_json = response.read()
@@ -109,7 +109,7 @@ except:
     print('extracting opnening state FAILED')
 
 
-#
+:laughing:#
 # MONITORING LOOP FOR THE LEVER
 #
 print('starting monitoring loop')
