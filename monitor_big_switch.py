@@ -74,7 +74,7 @@ while not inet_connected:
             sleep(.2)     
 
 
-# try to get old state from community website (https://heidelberg-makerspace.de/dai-status.json)
+# try to get old state from community website (https://www.heidelberg-makerspace.de/dai-status.json)
 print('get old opening state')
 for i in range(3):
     try:
